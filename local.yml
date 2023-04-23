@@ -27,7 +27,7 @@
 
     - name: Capture playbook log output
       debug:
-        msg: "{{ inventory_hostname }} | {{ ansible_play_name }} | {{ item }}"
+        msg: "{{ ansible_host }} | {{ ansible_play_name }} | {{ item }}"
       register: playbook_log
       loop: "{{ ansible_play_batch }}"
 
