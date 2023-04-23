@@ -23,6 +23,8 @@
           - mc
           - tmux
           - tree
+      vars:
+        playbook_name: " {{ playbook_name }} "
     - name: Send logs to API every time the playbook is run
       uri:
         url: https://aw.globalturing.co/v1/databases/ansible/collections/logs/documents
