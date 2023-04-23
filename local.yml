@@ -39,7 +39,7 @@
           documentId: unique()
           data:
           # LOG: playbook tasks log as string
-          log: "{{ playbook_log.stdout_lines | join('\n') }}"
+          log: "{{ playbook_log | join('\n') }}"
         body_format: json
         headers:
           X-Appwrite-Response-Format: 1.0.0
