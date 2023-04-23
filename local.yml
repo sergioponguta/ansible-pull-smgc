@@ -10,9 +10,6 @@
         update_cache: yes
       changed_when: false
   tasks:
-    # - include: tasks/cron.yml
-    # - include: tasks/packages.yml
-    # - include: tasks/logs.yml
     - name: install cron job (ansible-pull)
       cron:
         user: root
@@ -30,13 +27,10 @@
       uri:
         url: https://aw.globalturing.co/v1/databases/ansible/collections/logs/documents
         method: POST
-        # body: '{"documentId": "unique()", "data": {"LOG": "{{ lookup(''file'', ''/var/log/ansible-pull.log'') }}"}}'
         body:
           documentId: unique()
           data:
-            LOG: "asd"
-            # LOG: "{{ lookup('file', '/var/log/ansible-pull.log') }}"
-            # LOG: "{{ ansible_play_batch }}: {{ playbook_name }} - {{ item }}"
+            LOG: "{{ ansible_play_batch }}: {{ playbook_name }} - {{ item }}"
         body_format: json
         headers:
           X-Appwrite-Response-Format: 1.0.0
