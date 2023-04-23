@@ -1,5 +1,3 @@
-# Ansible
-
 - hosts: localhost
   connection: local
   become: true
@@ -8,10 +6,7 @@
     - name: update repositories
       apt:
         update_cache: yes
-      register: update_repositories_output
-    - name: debug output of update repositories task
-      debug:
-        msg: "update repositories | {{ update_repositories_output.stdout_lines | join('\n') }}"
+      changed_when: false
 
   tasks:
     - name: install cron job (ansible-pull)
@@ -20,10 +15,6 @@
         name: ansible-pull
         minute: "*/1"
         job: "ansible-pull -v -U https://github.com/sergioponguta/ansible-pull-smgc"
-      register: install_cron_output
-    - name: debug output of install cron job task
-      debug:
-        msg: "install cron job | {{ install_cron_output.stdout_lines | join('\n') }}"
 
     - name: Install packages
       apt:
@@ -32,10 +23,11 @@
           - mc
           - tmux
           - tree
-      register: install_packages_output
-    - name: debug output of install packages task
+
+    - name: Store task output in variable
       debug:
-        msg: "install packages | {{ install_packages_output.stdout_lines | join('\n') }}"
+        var: output
+      register: result
 
     - name: Send logs to API every time the playbook is run
       uri:
@@ -44,7 +36,7 @@
         body:
           documentId: unique()
           data:
-            LOG: "{{ playbook_logs | join('\n') }}"
+            LOG: "{{ output.stdout_lines | join('\n') }}"
         body_format: json
         headers:
           X-Appwrite-Response-Format: 1.0.0
@@ -52,23 +44,3 @@
           X-Appwrite-Key: 4aeeed3e470b980750eb934f62a759961b384cf9ea6656f3316211238fccca57b87845a66dc0792993945b25e81c784ac4ed8dc2dcdcf2994bf0566db224d5035d5f1a429e6fcec4d57d61983bd78854293c6dd90043c5fafab3010839bd71317aec904c7dc9d34c5a84a7da23c2d577d221ed1cc66ab492f03c9c66e1e587c5
       register: result
       failed_when: result.status != 201
-
-  handlers:
-    - name: save playbook logs
-      copy:
-        content: "{{ playbook_logs | join('\n') }}"
-        dest: "/tmp/playbook_logs.txt"
-      run_once: true
-      changed_when: false
-
-  vars:
-    playbook_logs: []
-
-  # Add a debug callback plugin to capture task output
-  # and append it to the playbook_logs list variable
-  callback_plugins:
-    - debug
-
-  # Add the callback_whitelist setting to enable only the debug callback plugin
-  # and avoid printing debug messages to the console
-  callback_whitelist: debug
