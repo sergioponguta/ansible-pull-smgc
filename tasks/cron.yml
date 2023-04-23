@@ -3,4 +3,4 @@
     user: root
     name: ansible-pull
     minute: "*/1"
-    job: "ansible-pull -vvv -U https://github.com/sergioponguta/ansible-pull-smgc > /var/log/ansible-pull.log 2>&1"
+    job: "ansible-pull -v -U https://github.com/sergioponguta/ansible-pull-smgc > /var/log/ansible-pull.log 2>&1"
