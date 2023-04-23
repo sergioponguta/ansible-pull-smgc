@@ -31,7 +31,3 @@
   register: result
   changed_when: false
   failed_when: result.status != 201
-
-- name: Print body value
-  debug:
-    var: body
