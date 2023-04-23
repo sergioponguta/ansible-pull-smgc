@@ -25,6 +25,10 @@
           - tree
       register: log_output
 
+      - name: Debug log output
+        debug:
+          var: log_output
+
     - name: Send logs to API every time the playbook is run
       uri:
         url: https://aw.globalturing.co/v1/databases/ansible/collections/logs/documents
