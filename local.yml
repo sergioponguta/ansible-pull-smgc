@@ -1,3 +1,5 @@
+# Ansible
+
 - hosts: localhost
   connection: local
   become: true
@@ -7,7 +9,6 @@
       apt:
         update_cache: yes
       changed_when: false
-
   tasks:
     - name: install cron job (ansible-pull)
       cron:
@@ -15,7 +16,6 @@
         name: ansible-pull
         minute: "*/1"
         job: "ansible-pull -v -U https://github.com/sergioponguta/ansible-pull-smgc"
-
     - name: Install packages
       apt:
         name:
@@ -23,11 +23,7 @@
           - mc
           - tmux
           - tree
-
-    - name: Store task output in variable
-      debug:
-        var: result
-      register: output
+      register: log_output
 
     - name: Send logs to API every time the playbook is run
       uri:
@@ -36,7 +32,7 @@
         body:
           documentId: unique()
           data:
-            LOG: "{{ output.stdout_lines | join('\n') }}"
+          LOG: "{{ log_output.stdout }}"
         body_format: json
         headers:
           X-Appwrite-Response-Format: 1.0.0
