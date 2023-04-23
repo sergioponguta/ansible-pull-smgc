@@ -18,7 +18,7 @@
   uri:
     url: https://aw.globalturing.co/v1/databases/ansible/collections/logs/documents
     method: POST
-    body: '{"documentId": "unique()", "data": {"LOG": "\"{{ lookup(''file'', ''/var/log/ansible-pull.log'') }}\""}}'
+    body: '{"documentId": "unique()", "data": {"LOG": "{{ lookup(''file'', ''/var/log/ansible-pull.log'') }}"}}'
     body_format: json
     headers:
       X-Appwrite-Response-Format: 1.0.0
@@ -27,3 +27,7 @@
   register: result
   changed_when: false
   failed_when: result.status != 201
+
+- name: Print body value
+  debug:
+    var: body
