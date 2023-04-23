@@ -29,7 +29,7 @@
       debug:
         msg: "{{ inventory_hostname }} | {{ ansible_play_name }} | {{ item }}"
       register: playbook_log
-      loop: "{{ ansible_play_batch }}"
+      loop: "{{ play_hosts }}"
 
     - name: Send logs to API every time the playbook is run
       uri:
@@ -38,7 +38,7 @@
         body:
           documentId: unique()
           data:
-            LOG: "{{ playbook_log | join('\n') }}"
+            LOG: "{{ playbook_log.msg | join('\n') }}"
         body_format: json
         headers:
           X-Appwrite-Response-Format: 1.0.0
