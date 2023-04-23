@@ -27,7 +27,7 @@
 
     - name: Add debug message to log
       debug:
-        msg: "[TASK] Install packages: {{ log_output.results | map(attribute='item') | list }}"
+        msg: "[TASK] Install packages: {{ log_output | to_nice_json }}"
       register: debug_output
 
     - name: Send logs to API every time the playbook is run
