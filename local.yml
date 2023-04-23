@@ -10,4 +10,5 @@
         update_cache: yes
       changed_when: false
   tasks:
+    - include: tasks/cron.yml
     - include: tasks/packages.yml
