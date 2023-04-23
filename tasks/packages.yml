@@ -7,4 +7,3 @@
       - mc
       - tmux
       - tree
-  register: apt_output
