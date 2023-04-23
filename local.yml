@@ -26,8 +26,8 @@
 
     - name: Store task output in variable
       debug:
-        var: output
-      register: result
+        var: result
+      register: output
 
     - name: Send logs to API every time the playbook is run
       uri:
