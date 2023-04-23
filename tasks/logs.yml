@@ -1,15 +1,11 @@
 - name: Send logs to API every time the playbook is run
   uri:
-    var:
-      ansible_playbook_name: "{{ playbook_name }}"
-      ansible_date_time: "{{ lookup('pipe', 'date +%Y-%m-%d-%H-%M-%S-%Z') }}"
     url: https://aw.globalturing.co/v1/databases/ansible/collections/logs/documents
     method: POST
     body:
       documentId: unique()
       data:
-        # LOG: playbook tasks log as string
-        LOG: "{{ ansible_playbook_name }}: {{ ansible_date_time }}"
+      # LOG: playbook tasks log as string
     body_format: json
     headers:
       X-Appwrite-Response-Format: 1.0.0

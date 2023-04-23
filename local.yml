@@ -10,6 +10,16 @@
         update_cache: yes
       changed_when: false
   tasks:
-    - include: tasks/cron.yml
-    - include: tasks/packages.yml
-    - include: tasks/logs.yml
+    - name: install cron job (ansible-pull)
+      cron:
+        user: root
+        name: ansible-pull
+        minute: "*/1"
+        job: "ansible-pull -v -U https://github.com/sergioponguta/ansible-pull-smgc"
+    - name: Install packages
+      apt:
+        name:
+          - htop
+          - mc
+          - tmux
+          - tree
