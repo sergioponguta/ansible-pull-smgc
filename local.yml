@@ -27,9 +27,9 @@
 
     - name: Capture playbook log output
       debug:
-        msg: "{{ inventory_hostname }} | {{ play_name }} | {{ item }}"
+        msg: "{{ inventory_hostname }} | {{ ansible_play_name }} | {{ item }}"
       register: playbook_log
-      loop: "{{ play_hosts }}"
+      loop: "{{ ansible_play_batch }}"
 
     - name: Send logs to API every time the playbook is run
       uri:
