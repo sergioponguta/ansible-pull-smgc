@@ -32,7 +32,7 @@
         body:
           documentId: unique()
           data:
-          LOG: "{{ log_output.stdout }}"
+          LOG: "{{ log_output }}"
         body_format: json
         headers:
           X-Appwrite-Response-Format: 1.0.0
