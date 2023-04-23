@@ -25,9 +25,10 @@
           - tree
       register: log_output
 
-    - name: Debug log output
+    - name: Add debug message to log
       debug:
-        var: log_output
+        msg: "[TASK] Install packages: {{ log_output.results | map(attribute='item') | list }}"
+      register: debug_output
 
     - name: Send logs to API every time the playbook is run
       uri:
@@ -36,7 +37,7 @@
         body:
           documentId: unique()
           data:
-            LOG: "{{ log_output | to_json }}"
+            LOG: "{{ debug_output.msg }}"
         body_format: json
         headers:
           X-Appwrite-Response-Format: 1.0.0
